@@ -76,6 +76,28 @@ def test_empty_input():
     assert result.stats.reduction_pct == 0.0
 
 
+def test_compress_json_caps_depth_and_lists():
+    blob = (
+        '{"rows": ['
+        + ",".join(f'{{"id": {i}, "v": "%s"}}' % ("x" * 200) for i in range(40))
+        + '], "count": 40}'
+    )
+    # No target_ratio: isolate the JSON structural capping (a target ratio would
+    # additionally invoke the extractive summarizer).
+    cfg = CompressionConfig()
+    cfg.trim.max_list_items = 10
+    result = ContextCompressor(cfg).compress_json(blob)
+    assert result.stats.compressed_tokens < result.stats.original_tokens
+    assert "more items" in result.compressed  # list truncated
+
+
+def test_compress_json_falls_back_on_invalid_json():
+    not_json = "Connecting...\nthis is not json\nthis is not json\n"
+    result = ContextCompressor().compress_json(not_json)
+    assert "this is not json" in result.compressed
+    assert "Connecting" not in result.compressed
+
+
 def test_token_counter_backend_and_counts():
     tc = TokenCounter()
     assert tc.count("") == 0

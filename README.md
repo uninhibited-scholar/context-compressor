@@ -1,8 +1,8 @@
 # Context Compressor
 
-**Shrink LLM context windows by 50–80% — removing noise, redundancy, and long-tail detail without losing the signal.**
+**Shrink LLM context windows — removing noise, redundancy, and long-tail detail without losing the signal.** Typically 40–80% fewer tokens depending on how repetitive the input is ([benchmarks](benchmarks/BENCHMARKS.md)).
 
-[![CI](https://github.com/uninhibite-scholar/context-compressor/actions/workflows/ci.yml/badge.svg)](https://github.com/uninhibite-scholar/context-compressor/actions/workflows/ci.yml)
+[![CI](https://github.com/uninhibited-scholar/context-compressor/actions/workflows/ci.yml/badge.svg)](https://github.com/uninhibited-scholar/context-compressor/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Zero dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](pyproject.toml)
@@ -30,7 +30,7 @@ print(result.compressed)        # the cleaned text, ready to send to your LLM
 |---|---|---|
 | **Context overflow** | Multi-turn agents accumulate history until the window overflows and the run breaks. | Collapse repeated turns and boilerplate phrasing. |
 | **Verbose tool output** | A vuln scan or `SELECT *` dumps thousands of near-identical lines, 90% noise. | Drop noise, dedupe rows, trim long-tail detail. |
-| **Token cost** | Every wasted token is latency + dollars on every call. | Typical 50–80% token reduction, measured with `tiktoken`. |
+| **Token cost** | Every wasted token is latency + dollars on every call. | 40–80% token reduction on noisy input, measured with `tiktoken`. |
 
 It works on **anything text**: chat transcripts, application logs, JSON blobs,
 SQL result dumps, and security scanner output.
@@ -59,7 +59,7 @@ pip install "context-compressor[tiktoken]"     # exact OpenAI/Anthropic-style to
 Or from source:
 
 ```bash
-git clone https://github.com/uninhibite-scholar/context-compressor
+git clone https://github.com/uninhibited-scholar/context-compressor
 cd context-compressor
 pip install -e ".[dev]"
 pytest
@@ -160,6 +160,48 @@ s.reduction_pct        # 52.2
 s.token_backend        # "tiktoken" or "heuristic"
 for stage in s.stages:
     print(stage.name, stage.chars_removed, stage.details)
+```
+
+## Benchmarks
+
+Reproducible with `python benchmarks/benchmark.py` (token counts via `tiktoken`):
+
+| Dataset | Tokens before | Tokens after | Reduction | Time |
+|---|--:|--:|--:|--:|
+| Application log | 13,479 | 7,864 | **41.7%** | 30 ms |
+| Security scan | 4,625 | 3,863 | **16.5%** | 11 ms |
+| Agent transcript | 3,172 | 2,665 | **16.0%** | 8 ms |
+| JSON result dump | 1,124 | 220 | **80.4%** | 1 ms |
+
+Reduction scales with how repetitive the input is — heavily duplicated logs and
+scan output compress much further than already-unique prose. See
+[`benchmarks/BENCHMARKS.md`](benchmarks/BENCHMARKS.md) for the chart.
+
+## JSON blobs
+
+```python
+result = compressor.compress_json(huge_json_string)   # caps depth, lists, long strings
+print(result.compressed)
+```
+
+## RAG: LangChain & LlamaIndex
+
+Drop-in adapters compress retrieved chunks before they reach the model. They are
+**dependency-free** (they duck-type the document objects), so installing this
+package never pulls in either framework.
+
+```python
+# LangChain — implements the BaseDocumentTransformer interface
+from context_compressor.integrations import CompressorDocumentTransformer
+
+transformer = CompressorDocumentTransformer()
+smaller_docs = transformer.transform_documents(retrieved_docs)
+# each doc.metadata["compression"] now records the token savings
+
+# LlamaIndex — works on nodes / Documents
+from context_compressor.integrations import compress_nodes
+
+nodes = compress_nodes(retriever.retrieve("my query"))
 ```
 
 ## Integrating with an agent loop

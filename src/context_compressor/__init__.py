@@ -25,7 +25,7 @@ from .summarizers.extractive import ExtractiveSummarizer
 from .summarizers.security_summarizer import SecuritySummarizer, Severity
 from .utils.token_counter import TokenCounter
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "ContextCompressor",

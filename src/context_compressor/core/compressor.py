@@ -106,3 +106,15 @@ class ContextCompressor:
         """Specialized path: summarize raw scanner output into a brief."""
         return SecuritySummarizer(
             examples_per_type=examples_per_type).summarize(scan_output)
+
+    def compress_json(self, json_str: str) -> CompressionResult:
+        """Specialized path for JSON blobs.
+
+        Applies the configured depth/list/string caps via the trimmer, then
+        runs the normal pipeline so long-string and redundancy savings still
+        apply. Falls back to plain text compression if the input isn't valid
+        JSON.
+        """
+        trimmer = DetailTrimmer(self.config.trim)
+        reshaped, ok = trimmer.trim_json(json_str)
+        return self.compress(reshaped if ok else json_str)

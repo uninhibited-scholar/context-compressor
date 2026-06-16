@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="298" font-family="system-ui, sans-serif">
+<rect width="760" height="298" fill="#0d1117"/>
+<text x="190" y="30" fill="#e6edf3" font-size="18" font-weight="700">Token reduction by dataset</text>
+<text x="178" y="72.44" fill="#9da7b3" font-size="13" text-anchor="end">Application log</text>
+<rect x="190" y="50" width="480" height="34" rx="5" fill="#21262d"/>
+<rect x="190" y="50" width="199" height="34" rx="5" fill="#2ea043"/>
+<text x="399" y="72.44" fill="#e6edf3" font-size="13" font-weight="600">41.7%</text>
+<text x="178" y="124.44" fill="#9da7b3" font-size="13" text-anchor="end">Security scan</text>
+<rect x="190" y="102" width="480" height="34" rx="5" fill="#21262d"/>
+<rect x="190" y="102" width="79" height="34" rx="5" fill="#2ea043"/>
+<text x="279" y="124.44" fill="#e6edf3" font-size="13" font-weight="600">16.5%</text>
+<text x="178" y="176.44" fill="#9da7b3" font-size="13" text-anchor="end">Agent transcript</text>
+<rect x="190" y="154" width="480" height="34" rx="5" fill="#21262d"/>
+<rect x="190" y="154" width="76" height="34" rx="5" fill="#2ea043"/>
+<text x="276" y="176.44" fill="#e6edf3" font-size="13" font-weight="600">16.0%</text>
+<text x="178" y="228.44" fill="#9da7b3" font-size="13" text-anchor="end">JSON result dump</text>
+<rect x="190" y="206" width="480" height="34" rx="5" fill="#21262d"/>
+<rect x="190" y="206" width="386" height="34" rx="5" fill="#2ea043"/>
+<text x="586" y="228.44" fill="#e6edf3" font-size="13" font-weight="600">80.4%</text>
+</svg>
