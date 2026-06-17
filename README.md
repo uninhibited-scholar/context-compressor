@@ -52,9 +52,12 @@ SQL result dumps, and security scanner output.
 ## Install
 
 ```bash
-pip install context-compressor                 # zero dependencies
-pip install "context-compressor[tiktoken]"     # exact OpenAI/Anthropic-style token counts
+pip install llm-context-compressor                 # zero dependencies
+pip install "llm-context-compressor[tiktoken]"     # exact OpenAI/Anthropic-style token counts
 ```
+
+> Install name is `llm-context-compressor`; the import is `import context_compressor`
+> (like `scikit-learn` → `import sklearn`).
 
 Or from source:
 

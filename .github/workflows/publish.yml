@@ -44,7 +44,7 @@ jobs:
     # on PyPI (Project → Publishing → GitHub).
     environment:
       name: pypi
-      url: https://pypi.org/p/context-compressor
+      url: https://pypi.org/p/llm-context-compressor
     permissions:
       id-token: write   # required for Trusted Publishing
     steps:

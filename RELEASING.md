@@ -1,14 +1,17 @@
 # Releasing
 
-Releases are published to [PyPI](https://pypi.org/project/context-compressor/)
+Releases are published to [PyPI](https://pypi.org/project/llm-context-compressor/)
 automatically via **Trusted Publishing** (OIDC) — no API tokens are stored
 anywhere. Pushing a `v*` tag triggers `.github/workflows/publish.yml`.
+
+The PyPI distribution name is `llm-context-compressor`; the import package is
+`context_compressor`.
 
 ## One-time setup (PyPI side)
 
 1. Create an account at https://pypi.org and verify your email.
 2. Go to **Account → Publishing → Add a new pending publisher** and fill in:
-   - **PyPI Project Name:** `context-compressor`
+   - **PyPI Project Name:** `llm-context-compressor`
    - **Owner:** `uninhibited-scholar`
    - **Repository name:** `context-compressor`
    - **Workflow name:** `publish.yml`
