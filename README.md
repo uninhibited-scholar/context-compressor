@@ -2,6 +2,8 @@
 
 **Shrink LLM context windows — removing noise, redundancy, and long-tail detail without losing the signal.** Typically 40–80% fewer tokens depending on how repetitive the input is ([benchmarks](benchmarks/BENCHMARKS.md)).
 
+[![PyPI](https://img.shields.io/pypi/v/llm-context-compressor.svg)](https://pypi.org/project/llm-context-compressor/)
+[![Downloads](https://img.shields.io/pypi/dm/llm-context-compressor.svg)](https://pypi.org/project/llm-context-compressor/)
 [![CI](https://github.com/uninhibited-scholar/context-compressor/actions/workflows/ci.yml/badge.svg)](https://github.com/uninhibited-scholar/context-compressor/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -48,6 +50,21 @@ SQL result dumps, and security scanner output.
 - **Security-aware.** A dedicated summarizer turns raw scanner output into a
   severity-ranked brief.
 - **CLI included.** `cat scan.log | context-compress --stats`.
+
+## How it compares
+
+| | **Context Compressor** | LLM-based compressors (e.g. LLMLingua) | Manual truncation |
+|---|---|---|---|
+| Approach | Rule-based pipeline | A model scores/keeps tokens | Cut to last N tokens |
+| Dependencies | **Zero** (tiktoken optional) | A language model + GPU | None |
+| Speed | ~milliseconds, CPU | Model inference latency | Instant |
+| Deterministic | **Yes** | No | Yes |
+| Preserves structure | **Yes** (counts, severity, JSON shape) | Partly | No — drops whole tail |
+| Best at | Noisy/repetitive logs, scans, transcripts | Dense natural-language prose | Quick-and-dirty |
+
+They're complementary: use this to cheaply strip the obvious 50–80% of noise on
+CPU, and reach for an LLM-based compressor only when you need to squeeze dense
+prose further.
 
 ## Install
 
