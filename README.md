@@ -2,6 +2,14 @@
 
 **Shrink LLM context windows — removing noise, redundancy, and long-tail detail without losing the signal.** Typically 40–80% fewer tokens depending on how repetitive the input is ([benchmarks](benchmarks/BENCHMARKS.md)).
 
+> 🧩 **Part of the Agent Loop Toolkit** — three small, zero-dependency, framework-agnostic libraries you bolt onto any agent loop. Each works standalone; together they cover **context → gate → steer**.
+>
+> | Where it plugs in | Library | What it does |
+> | --- | --- | --- |
+> | **The context** going in ← *you are here* | **context-compressor** | Shrink the LLM context window 40–80% — drop noise, redundancy, long-tail detail |
+> | **The plan**, before a step runs | [precheck-guardian](https://github.com/uninhibited-scholar/precheck-guardian) | Preview the plan, see per-step risk, approve / reject / edit |
+> | **The run**, while it's live | [something-else](https://github.com/uninhibited-scholar/something-else) | Interject, pause, or guard a live loop without restarting |
+
 [![PyPI](https://img.shields.io/pypi/v/llm-context-compressor.svg)](https://pypi.org/project/llm-context-compressor/)
 [![Downloads](https://img.shields.io/pypi/dm/llm-context-compressor.svg)](https://pypi.org/project/llm-context-compressor/)
 [![CI](https://github.com/uninhibited-scholar/context-compressor/actions/workflows/ci.yml/badge.svg)](https://github.com/uninhibited-scholar/context-compressor/actions/workflows/ci.yml)
